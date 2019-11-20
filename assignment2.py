@@ -143,10 +143,10 @@ def main():
     df.dropna(how='any',inplace=True)
     
     asStock  = cols
+    
     #number of stocks and factors
     nStocks = len(asStock)
     nFactors = len(factors)
-    
     
     #initialize ksi and sigma vector
     vKsi = np.zeros((nFactors,nStocks))
@@ -158,7 +158,10 @@ def main():
     
     rSquareds = pd.DataFrame(index = asStock,data=vRsquared,columns=['R^2'])
     print('R-squared of stocks estimations with factor model: \n',rSquareds)
+    companies = ('AIG', 'CVX', 'MSFT', 'TSLA')
+    y_pot = np.arange(len(companies))
     rSquareds.plot(kind='bar')
+    plt.xticks(y_pot,companies)
     plt.show()
     
     ##from ksi prime to beta vector
@@ -177,8 +180,8 @@ def main():
 
     
     ##variance of returns
-    df_demeaned = np.array(df[asStock] - np.mean(df[asStock]))
-    var_est = (df_demeaned.T @ df_demeaned)/(T-1)
+    df_demeaned = df[asStock] - np.mean(df[asStock])
+    var_est = np.array(df_demeaned.T)@np.array(df_demeaned)/(T-1)
     print('Covariance matrix of returns: \n',var_est)
     
 
